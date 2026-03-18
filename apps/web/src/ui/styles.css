@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Manrope:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap");
+/* Apple-like system typography (SF Pro on macOS, Segoe UI on Windows). */
 
 :root{
   --bg: #f3f0ff;            /* soft lavender section background */
@@ -7,6 +7,8 @@
   --text: #0f172a;          /* slate-900 */
   --muted: #475569;         /* slate-600 */
   --border: rgba(15,23,42,.12);
+
+  --font-apple: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 
   --purple: #6d5bd0;        /* Inala-ish purple */
   --orange: #ff7a2f;        /* CTA orange */
@@ -22,8 +24,11 @@
 html,body{ height:100%; }
 body{
   margin:0;
-  font-family: "Plus Jakarta Sans", ui-sans-serif, system-ui;
+  font-family: var(--font-apple);
   color: var(--text);
+  line-height: 1.35;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   background:
     radial-gradient(1120px 820px at 8% 8%, rgba(255,122,47,.62), transparent 62%),
     radial-gradient(1120px 820px at 96% 10%, rgba(255,122,47,.54), transparent 64%),
@@ -81,7 +86,6 @@ a{ color: inherit; }
   line-height: 1.05;
 }
 .brandtitle strong{
-  font-family: "Fraunces", serif;
   font-weight: 700;
   font-size: 18px;
   color: rgba(255,255,255,.98);
@@ -108,7 +112,7 @@ a{ color: inherit; }
 
 .btn{
   appearance:none;
-  font-family: "Manrope", "Plus Jakarta Sans", ui-sans-serif, system-ui;
+  font-family: var(--font-apple);
   border: 1px solid rgba(15,23,42,.12);
   background: rgba(255,255,255,.92);
   color: var(--text);
@@ -155,7 +159,6 @@ a{ color: inherit; }
 }
 .card h2{
   margin: 0 0 12px;
-  font-family: "Fraunces", serif;
   font-size: 18px;
   color: var(--text);
 }
@@ -182,6 +185,45 @@ input:focus, select:focus{
 }
 
 .hint{ font-size: 12px; color: var(--muted); }
+
+/* Modern "Tips" card (used on learner screen). */
+.tipsList{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.tipsItem{
+  display:flex;
+  gap: 10px;
+  align-items:flex-start;
+  padding: 10px 12px;
+  border-radius: 16px;
+  border: 1px solid rgba(15,23,42,.08);
+  background: rgba(255,255,255,.78);
+}
+.tipsIcon{
+  width: 24px;
+  height: 24px;
+  border-radius: 10px;
+  flex: 0 0 auto;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background: rgba(43,138,110,.12);
+  border: 1px solid rgba(43,138,110,.22);
+  color: rgba(23,102,82,.95);
+  font-size: 13px;
+  font-weight: 700;
+  margin-top: 1px;
+}
+.tipsText{
+  font-size: 13px;
+  line-height: 1.35;
+  color: var(--muted);
+}
 .alert{
   border: 1px solid var(--border);
   background: rgba(255,255,255,.86);
@@ -349,5 +391,43 @@ tbody tr:hover td{
   filter: drop-shadow(0 10px 14px rgba(15,23,42,.22));
   transform: translateY(-2px);
   user-select: none;
+}
+
+/* Mobile polish: prevent the green header from squashing. */
+@media (max-width: 520px){
+  .topbar{
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 12px 14px;
+    gap: 10px;
+  }
+  .brand{
+    width: 100%;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .nav{
+    width: 100%;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .brandtitle strong{
+    font-size: 16px;
+  }
+  .brandtitle span{
+    font-size: 11px;
+  }
+  .btn{
+    padding: 9px 12px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 380px){
+  .btn{
+    padding: 8px 10px;
+    font-size: 12px;
+  }
 }
 

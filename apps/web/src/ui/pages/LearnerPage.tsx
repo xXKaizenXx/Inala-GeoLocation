@@ -168,11 +168,22 @@ export function LearnerPage({ profile }: { profile: Profile }) {
 
       <div className="card">
         <h2>Tips</h2>
-        <div className="hint">
-          - Use HTTPS in production (browsers often require it for geolocation).<br />
-          - If you’re testing locally, allow location permission and try “high accuracy”.<br />- On laptops/desktops, accuracy can be much worse than on
-          a phone.
-        </div>
+        <ul className="tipsList">
+          <li className="tipsItem">
+            <span className="tipsIcon">✓</span>
+            <span className="tipsText">Use HTTPS in production (browsers often require it for geolocation).</span>
+          </li>
+          <li className="tipsItem">
+            <span className="tipsIcon">✓</span>
+            <span className="tipsText">
+              If you’re testing locally, allow location permission and try “high accuracy”.
+            </span>
+          </li>
+          <li className="tipsItem">
+            <span className="tipsIcon">✓</span>
+            <span className="tipsText">On laptops/desktops, accuracy can be much worse than on a phone.</span>
+          </li>
+        </ul>
       </div>
     </div>
   );
