@@ -20,16 +20,24 @@ Small web app for learners to **clock in only when physically within a venue rad
 
 ---
 
+**User Login Info for Testing**  // This is provided for when you want to test both Learner and Facilitator functionality
+
+Facilitators/Admins:
+- Jarred Lambert (username/password) --> (test.jarred@inala.co.za/cofounder@1234)
+- Jason Schwegmann (username/password) --> (test.jason@inala.co.za/cofounder@1234)
+
+Learners:
+- Sachin Hockey (username/password) --> (sachin.user@inala.co.za/sachin@1234)
+- Auston Lewis (username/password) --> (auston.user@inala.co.za/auston@1234)
+- Carly Carter (username/password) --> (carly.user@inala.co.za/carly@1234)
+
+**LIVE URL**
+https://inala-geo-location-web.vercel.app/
+
 ## Local setup
 
 ### 1) Create Supabase project + run SQL
 
-- Create a Supabase project
-- In Supabase SQL Editor, run:
-  - `supabase/schema.sql`
-  - `supabase/seed.sql`
-
-This seeds **2 venues** with coordinates and radii.
 
 ### 2) Create sample users + profiles
 
@@ -43,15 +51,15 @@ Then insert their profiles (SQL Editor), using the UUIDs from Auth:
 
 ```sql
 insert into public.profiles (id, full_name, role) values
-  ('<learner-uuid>', 'Ava Learner', 'learner'),
-  ('<facilitator-uuid>', 'Finn Facilitator', 'facilitator');
+  ('<learner-uuid>', 'Sachin Hockey', 'learner'),
+  ('<facilitator-uuid>', 'Jarred Lambert', 'facilitator');
 ```
 
 ### 3) Backend env + run API
 
-Copy env file:
+Create env file:
 
-- `apps/api/.env.example` → `apps/api/.env`
+→ `apps/api/.env`
 
 Fill:
 
@@ -75,9 +83,9 @@ API runs on `http://localhost:4000`.
 
 ### 4) Frontend env + run web app
 
-Copy env file:
+Created env file:
 
-- `apps/web/.env.example` → `apps/web/.env`
+→ `apps/web/.env`
 
 Fill:
 
@@ -120,7 +128,7 @@ If you’re outside the radius, the backend responds with:
 
 ## Deployment notes
 
-### Frontend (Vercel/Netlify)
+### Frontend (Vercel)
 
 Set env vars:
 
@@ -128,7 +136,7 @@ Set env vars:
 - `VITE_SUPABASE_ANON_KEY`
 - `VITE_API_BASE_URL` (your deployed API URL)
 
-### Backend (Railway/Render/Fly.io)
+### Backend (Render)
 
 Set env vars:
 
