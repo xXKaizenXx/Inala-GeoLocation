@@ -131,20 +131,6 @@ export function LearnerPage({ profile }: { profile: Profile }) {
           <div className="alert bad">{geo.message}</div>
         ) : null}
 
-        {selected ? (
-          <div style={{ marginTop: 12 }}>
-            <MapPreview
-              venue={{
-                lat: selected.latitude,
-                lon: selected.longitude,
-                radiusM: selected.allowed_radius_m,
-                name: selected.name
-              }}
-              user={geo.state === "ready" ? { lat: geo.coords.lat, lon: geo.coords.lon, accuracyM: geo.coords.accuracyM } : undefined}
-            />
-          </div>
-        ) : null}
-
         {result ? (
           <div style={{ marginTop: 12 }}>
             {result.ok ? (
@@ -156,6 +142,20 @@ export function LearnerPage({ profile }: { profile: Profile }) {
                 Clock-in rejected for <b>{result.venueName}</b>. You are {Math.round(result.distanceM)}m away (allowed {result.allowedRadiusM}m).
               </div>
             )}
+          </div>
+        ) : null}
+
+        {selected ? (
+          <div style={{ marginTop: 12 }}>
+            <MapPreview
+              venue={{
+                lat: selected.latitude,
+                lon: selected.longitude,
+                radiusM: selected.allowed_radius_m,
+                name: selected.name
+              }}
+              user={geo.state === "ready" ? { lat: geo.coords.lat, lon: geo.coords.lon, accuracyM: geo.coords.accuracyM } : undefined}
+            />
           </div>
         ) : null}
 

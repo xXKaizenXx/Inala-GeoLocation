@@ -21,7 +21,10 @@ Small web app for learners to **clock in only when physically within a venue rad
 ---
 
 **User Login Info for Testing**  // This is provided for when you want to test both Learner and Facilitator functionality
+<<<<<<< HEAD
 
+=======
+>>>>>>> 01b8dbb (Improved User Feedback UI)
 Facilitators/Admins:
 - Jarred Lambert (username/password) --> (test.jarred@inala.co.za/cofounder@1234)
 - Jason Schwegmann (username/password) --> (test.jason@inala.co.za/cofounder@1234)
@@ -31,13 +34,25 @@ Learners:
 - Auston Lewis (username/password) --> (auston.user@inala.co.za/auston@1234)
 - Carly Carter (username/password) --> (carly.user@inala.co.za/carly@1234)
 
+<<<<<<< HEAD
 **LIVE URL**
 https://inala-geo-location-web.vercel.app/
+=======
+>>>>>>> 01b8dbb (Improved User Feedback UI)
 
 ## Local setup
 
 ### 1) Create Supabase project + run SQL
 
+<<<<<<< HEAD
+=======
+In Supabase Dashboard:
+
+- Create a new Supabase project
+- Open **SQL Editor** and run:
+  - `supabase/schema.sql`
+  - `supabase/seed.sql`
+>>>>>>> 01b8dbb (Improved User Feedback UI)
 
 ### 2) Create sample users + profiles
 
@@ -59,7 +74,11 @@ insert into public.profiles (id, full_name, role) values
 
 Create env file:
 
+<<<<<<< HEAD
 → `apps/api/.env`
+=======
+  → `apps/api/.env`
+>>>>>>> 01b8dbb (Improved User Feedback UI)
 
 Fill:
 
@@ -83,9 +102,15 @@ API runs on `http://localhost:4000`.
 
 ### 4) Frontend env + run web app
 
+<<<<<<< HEAD
 Created env file:
 
 → `apps/web/.env`
+=======
+Create env file:
+
+ → `apps/web/.env`
+>>>>>>> 01b8dbb (Improved User Feedback UI)
 
 Fill:
 
@@ -134,7 +159,7 @@ Set env vars:
 
 - `VITE_SUPABASE_URL`
 - `VITE_SUPABASE_ANON_KEY`
-- `VITE_API_BASE_URL` (your deployed API URL)
+- `VITE_API_BASE_URL` (my deployed API URL)
 
 ### Backend (Render)
 
@@ -142,8 +167,7 @@ Set env vars:
 
 - `SUPABASE_URL`
 - `SUPABASE_SERVICE_ROLE_KEY`
-- `WEB_ORIGIN` (your deployed web URL)
+- `WEB_ORIGIN` (my deployed web URL)
 - `PORT` (provided by platform)
 
 Important: **Geolocation often requires HTTPS** in production.
-
