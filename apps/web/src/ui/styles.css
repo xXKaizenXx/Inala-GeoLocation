@@ -18,6 +18,7 @@
 
   --shadow: 0 12px 30px rgba(15,23,42,.08);
   --shadow2: 0 18px 46px rgba(15,23,42,.10);
+  --ease-out-soft: cubic-bezier(.22,.84,.24,1);
 }
 
 *{ box-sizing: border-box; }
@@ -152,6 +153,7 @@ a{ color: inherit; }
   display: grid;
   gap: 16px;
   grid-template-columns: 1fr;
+  animation: pageFadeIn 720ms var(--ease-out-soft) both;
 }
 @media (min-width: 960px){
   .loginExperience{
@@ -172,6 +174,7 @@ a{ color: inherit; }
     linear-gradient(130deg, rgba(43,138,110,.96), rgba(58,167,135,.88) 54%, rgba(109,91,208,.76));
   box-shadow: var(--shadow2);
   color: #fff;
+  animation: heroReveal 820ms var(--ease-out-soft) both;
 }
 .card.loginHero::before{
   content: "";
@@ -183,6 +186,7 @@ a{ color: inherit; }
   border: 1px solid rgba(255,255,255,.20);
   background: radial-gradient(circle at 40% 40%, rgba(255,255,255,.22), rgba(255,255,255,.02));
   transform: rotate(14deg);
+  animation: floatOrbOne 8s ease-in-out infinite;
 }
 .card.loginHero::after{
   content: "";
@@ -194,6 +198,7 @@ a{ color: inherit; }
   border-radius: 999px;
   border: 1px solid rgba(255,255,255,.16);
   background: radial-gradient(circle at 48% 38%, rgba(255,255,255,.16), rgba(255,255,255,.03));
+  animation: floatOrbTwo 11s ease-in-out infinite;
 }
 .card.loginHero h1{
   margin: 8px 0 12px;
@@ -203,6 +208,7 @@ a{ color: inherit; }
   letter-spacing: -.03em;
   position: relative;
   z-index: 1;
+  animation: riseIn 520ms var(--ease-out-soft) both;
 }
 .heroKicker{
   position: relative;
@@ -218,6 +224,7 @@ a{ color: inherit; }
   border: 1px solid rgba(255,255,255,.26);
   background: rgba(255,255,255,.14);
   backdrop-filter: blur(8px);
+  animation: riseIn 560ms var(--ease-out-soft) both;
 }
 .heroLead{
   position: relative;
@@ -226,6 +233,7 @@ a{ color: inherit; }
   margin: 0;
   color: rgba(255,255,255,.92);
   font-size: 14px;
+  animation: riseIn 640ms var(--ease-out-soft) both;
 }
 .heroTags{
   position: relative;
@@ -259,7 +267,13 @@ a{ color: inherit; }
   border-radius: 14px;
   border: 1px solid rgba(255,255,255,.20);
   background: rgba(0,0,0,.10);
+  transform: translateY(8px);
+  opacity: 0;
+  animation: stepIn 620ms var(--ease-out-soft) both;
 }
+.heroStep:nth-child(1){ animation-delay: 140ms; }
+.heroStep:nth-child(2){ animation-delay: 220ms; }
+.heroStep:nth-child(3){ animation-delay: 300ms; }
 .heroStep span{
   display: inline-flex;
   width: 24px;
@@ -285,6 +299,7 @@ a{ color: inherit; }
     radial-gradient(520px 200px at 8% 0%, rgba(109,91,208,.08), transparent 56%),
     radial-gradient(520px 220px at 100% 0%, rgba(255,122,47,.08), transparent 58%),
     rgba(255,255,255,.92);
+  animation: panelSlideIn 760ms var(--ease-out-soft) both;
 }
 .loginPanel h2{
   font-size: 24px;
@@ -293,11 +308,53 @@ a{ color: inherit; }
 }
 .loginSubmit{
   min-width: 140px;
+  transition: transform 180ms var(--ease-out-soft), box-shadow 180ms var(--ease-out-soft), filter 180ms var(--ease-out-soft);
+}
+.loginSubmit:hover{
+  transform: translateY(-1px) scale(1.01);
+  filter: saturate(1.06);
 }
 .loginHint{
   margin-top: 14px;
   border-top: 1px dashed rgba(15,23,42,.14);
   padding-top: 10px;
+}
+
+.loginPanel input{
+  transition: border-color 160ms ease, box-shadow 180ms var(--ease-out-soft), transform 180ms var(--ease-out-soft), background 180ms ease;
+}
+.loginPanel input:hover{
+  transform: translateY(-1px);
+  background: rgba(255,255,255,.94);
+}
+
+@keyframes pageFadeIn{
+  from{ opacity: 0; transform: translateY(10px); }
+  to{ opacity: 1; transform: translateY(0); }
+}
+@keyframes heroReveal{
+  from{ opacity: 0; transform: translateY(12px) scale(.985); }
+  to{ opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes panelSlideIn{
+  from{ opacity: 0; transform: translateX(14px); }
+  to{ opacity: 1; transform: translateX(0); }
+}
+@keyframes riseIn{
+  from{ opacity: 0; transform: translateY(8px); }
+  to{ opacity: 1; transform: translateY(0); }
+}
+@keyframes stepIn{
+  from{ opacity: 0; transform: translateY(10px); }
+  to{ opacity: 1; transform: translateY(0); }
+}
+@keyframes floatOrbOne{
+  0%,100%{ transform: translateY(0) rotate(14deg); }
+  50%{ transform: translateY(-10px) rotate(16deg); }
+}
+@keyframes floatOrbTwo{
+  0%,100%{ transform: translateY(0); }
+  50%{ transform: translateY(-12px); }
 }
 
 .card{
@@ -593,6 +650,13 @@ tbody tr:hover td{
   .btn{
     padding: 8px 10px;
     font-size: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce){
+  *, *::before, *::after{
+    animation: none !important;
+    transition: none !important;
   }
 }
 
