@@ -22,6 +22,8 @@ function formatDateTime(iso: string) {
 }
 
 function requestLocation(): Promise<{ lat: number; lon: number; accuracyM: number }> {
+  // Shared geolocation helper used by both create/edit venue forms.
+  // Keeping this in one place ensures behavior stays identical in both flows.
   return new Promise((resolve, reject) => {
     if (!navigator.geolocation) return reject(new Error("Geolocation not supported by this browser."));
     navigator.geolocation.getCurrentPosition(
@@ -63,6 +65,8 @@ export function AdminPage() {
   const [editDraft, setEditDraft] = useState<VenueUpsertInput | null>(null);
 
   async function loadClockIns() {
+    // "Today" tab data source. This is intentionally separate from venue loading
+    // so each tab can refresh independently.
     setLoadingClockIns(true);
     setClockInError(null);
     try {
@@ -76,6 +80,8 @@ export function AdminPage() {
   }
 
   async function loadVenues() {
+    // "Venues" tab data source (active + inactive), used after every CRUD action
+    // to keep the table as the single source of truth from the backend.
     setLoadingVenues(true);
     setVenueError(null);
     try {
@@ -89,6 +95,7 @@ export function AdminPage() {
   }
 
   useEffect(() => {
+    // Initial dashboard hydration on first mount.
     loadClockIns();
     loadVenues();
   }, []);
@@ -246,6 +253,8 @@ export function AdminPage() {
                     className="btn primary"
                     disabled={createBusy}
                     onClick={async () => {
+                      // Minimal client-side checks happen here.
+                      // Full validation and authorization still happen on the API.
                       setCreateBusy(true);
                       setVenueError(null);
                       try {
@@ -294,6 +303,7 @@ export function AdminPage() {
                 ) : (
                   venues.map((v) => (
                     <>
+                      {/* Primary row: current venue snapshot + quick actions. */}
                       <tr key={v.id}>
                         <td>
                           <div style={{ fontWeight: 600 }}>{v.name}</div>
@@ -312,6 +322,8 @@ export function AdminPage() {
                             <button
                               className={v.is_active ? "btn btn--subtle" : "btn btn--success"}
                               onClick={async () => {
+                                // Soft state change is preferred over delete when
+                                // a venue is temporarily unavailable.
                                 const next = !v.is_active;
                                 try {
                                   setVenueError(null);
@@ -327,6 +339,8 @@ export function AdminPage() {
                             <button
                               className="btn btn--subtle"
                               onClick={() => {
+                                // Edit form is rendered inline directly under this row.
+                                // Closing simply clears the draft state.
                                 if (editingId === v.id) {
                                   setEditingId(null);
                                   setEditDraft(null);
@@ -349,6 +363,8 @@ export function AdminPage() {
                             <button
                               className="btn btn--danger"
                               onClick={async () => {
+                                // Deletion is restricted server-side when clock-ins exist.
+                                // This confirm is just UX protection before hitting the API.
                                 const ok = confirm(
                                   "Delete this venue?\n\nThis will only work if the venue has no clock-ins. If it has clock-ins, deactivate it instead."
                                 );
@@ -373,6 +389,7 @@ export function AdminPage() {
                       </tr>
 
                       {editingId === v.id && editDraft ? (
+                        // Secondary row: inline editor bound to the currently selected venue.
                         <tr key={`${v.id}-edit`}>
                           <td colSpan={6}>
                             <div className="card" style={{ marginTop: 10 }}>
@@ -460,6 +477,8 @@ export function AdminPage() {
                                     className="btn primary"
                                     disabled={editBusy}
                                     onClick={async () => {
+                                      // Validate user input before sending PATCH request.
+                                      // This gives faster feedback, while backend remains final authority.
                                       if (!editDraft) return;
                                       setEditBusy(true);
                                       setVenueError(null);

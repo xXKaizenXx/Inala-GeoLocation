@@ -17,6 +17,7 @@ begin
 end $$;
 
 create table if not exists public.profiles (
+  -- `id` intentionally mirrors auth.users.id (1:1 identity record).
   id uuid primary key references auth.users(id) on delete cascade,
   full_name text not null check (char_length(full_name) >= 2),
   role public.app_role not null default 'learner',
@@ -38,6 +39,7 @@ create table if not exists public.venues (
 
 create table if not exists public.clock_ins (
   id uuid primary key default gen_random_uuid(),
+  -- Restrict deletes so attendance history cannot be orphaned accidentally.
   learner_id uuid not null references public.profiles(id) on delete restrict,
   venue_id uuid not null references public.venues(id) on delete restrict,
   client_latitude double precision not null check (client_latitude between -90 and 90),
@@ -97,3 +99,6 @@ with check (auth.uid() = id);
 
 -- App uses service role for venues + clock_ins access through API.
 -- Keep direct client access blocked by omitting authenticated policies.
+-- In other words:
+-- - Browser client can read (and optionally update) only its own `profiles` row.
+-- - Venue + clock-in data is mediated by backend API authorization rules.

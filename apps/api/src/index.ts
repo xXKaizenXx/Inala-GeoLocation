@@ -41,6 +41,8 @@ app.get(
 );
 
 async function requireAdminOrFacilitatorRole(userId: string) {
+  // Role checks are performed from the `profiles` table (not JWT custom claims),
+  // so permission changes take effect immediately without token refresh.
   const { data: profile, error: profileErr } = await supabaseAdmin
     .from("profiles")
     .select("id,role")
@@ -62,6 +64,9 @@ const VenueUpsertSchema = z.object({
   isActive: z.boolean().optional()
 });
 
+// Shape expected by create/update venue endpoints.
+// `allowedRadiusM` and `isActive` use frontend-friendly naming and are mapped
+// to DB columns (`allowed_radius_m`, `is_active`) when persisted.
 // Facilitator/admin: list venues (includes inactive) so staff can manage locations.
 app.get(
   "/admin/venues",
@@ -113,6 +118,7 @@ app.patch(
     const venueId = z.string().uuid().parse(req.params.id);
     const body = VenueUpsertSchema.partial().parse(req.body);
 
+    // Build a partial update object so omitted fields are left untouched.
     const update: Record<string, unknown> = {};
     if (body.name !== undefined) update.name = body.name;
     if (body.address !== undefined) update.address = body.address;
@@ -186,6 +192,8 @@ app.post(
       { lat: venue.latitude, lon: venue.longitude }
     );
 
+    // Geofence rule: outside-radius attempts are rejected but returned with
+    // distance metadata so the UI can explain exactly why it failed.
     if (distanceM > venue.allowed_radius_m) {
       return res.status(403).json({
         ok: false,
@@ -203,6 +211,7 @@ app.post(
       .maybeSingle();
     if (profileErr) throw profileErr;
     if (!profile) return res.status(403).json({ error: "Profile missing. Contact admin." });
+    // Only learners can submit attendance entries.
     if (profile.role !== "learner") return res.status(403).json({ error: "Only learners can clock in." });
 
     const { data: inserted, error: insertErr } = await supabaseAdmin
@@ -237,6 +246,8 @@ app.get(
     await requireAdminOrFacilitatorRole(user.id);
 
     const start = new Date();
+    // "Today" is interpreted in server local time for this assessment app.
+    // For production, consider an explicit timezone policy.
     start.setHours(0, 0, 0, 0);
 
     const { data, error } = await supabaseAdmin
@@ -255,6 +266,7 @@ app.get(
     if (error) throw error;
 
     const rows =
+      // Flatten joined Supabase shape into the frontend contract.
       data?.map((r: any) => ({
         id: r.id,
         clockedInAt: r.clocked_in_at,

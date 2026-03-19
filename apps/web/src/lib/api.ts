@@ -22,6 +22,7 @@ async function authHeader() {
 }
 
 export async function fetchVenues(): Promise<Venue[]> {
+  // Learner list intentionally returns active venues only (enforced by API).
   const headers = await authHeader();
   const res = await fetch(`${env.API_BASE_URL}/venues`, { headers });
   const json = await res.json();
@@ -42,6 +43,8 @@ export async function clockIn(input: { venueId: string; clientLatitude: number; 
   });
   const json = await res.json();
   if (res.ok) return json as ClockInResult;
+  // Outside-radius is a handled business outcome (not a technical failure),
+  // so we return the payload for user-friendly feedback instead of throwing.
   if (res.status === 403 && json.reason === "OUTSIDE_RADIUS") return json as ClockInResult;
   throw new Error(json.error ?? "Clock-in failed");
 }
@@ -55,6 +58,7 @@ export type TodayClockInRow = {
 };
 
 export async function fetchTodayClockIns(): Promise<TodayClockInRow[]> {
+  // Admin/facilitator-only endpoint for dashboard "Today" table.
   const headers = await authHeader();
   const res = await fetch(`${env.API_BASE_URL}/admin/clock-ins/today`, { headers });
   const json = await res.json();
@@ -77,6 +81,7 @@ export type VenueUpsertInput = {
 };
 
 export async function fetchAdminVenues(): Promise<AdminVenue[]> {
+  // Management view includes inactive venues so staff can reactivate when needed.
   const headers = await authHeader();
   const res = await fetch(`${env.API_BASE_URL}/admin/venues`, { headers });
   const json = await res.json();
@@ -85,6 +90,7 @@ export async function fetchAdminVenues(): Promise<AdminVenue[]> {
 }
 
 export async function createVenue(input: VenueUpsertInput): Promise<{ id: string }> {
+  // Create operation returns the new id so callers can react if needed.
   const headers = { ...(await authHeader()), "Content-Type": "application/json" };
   const res = await fetch(`${env.API_BASE_URL}/admin/venues`, { method: "POST", headers, body: JSON.stringify(input) });
   const json = await res.json();
@@ -93,6 +99,7 @@ export async function createVenue(input: VenueUpsertInput): Promise<{ id: string
 }
 
 export async function updateVenue(venueId: string, input: Partial<VenueUpsertInput>): Promise<void> {
+  // Partial updates keep payloads small and map directly to PATCH semantics.
   const headers = { ...(await authHeader()), "Content-Type": "application/json" };
   const res = await fetch(`${env.API_BASE_URL}/admin/venues/${venueId}`, { method: "PATCH", headers, body: JSON.stringify(input) });
   const json = await res.json();
@@ -100,6 +107,7 @@ export async function updateVenue(venueId: string, input: Partial<VenueUpsertInp
 }
 
 export async function deleteVenue(venueId: string): Promise<void> {
+  // API enforces "no delete if clock-ins exist" to preserve attendance history.
   const headers = await authHeader();
   const res = await fetch(`${env.API_BASE_URL}/admin/venues/${venueId}`, { method: "DELETE", headers });
   const json = await res.json();
