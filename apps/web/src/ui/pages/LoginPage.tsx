@@ -12,9 +12,37 @@ export function LoginPage() {
   const [busy, setBusy] = useState(false);
 
   return (
-    <div className="grid">
-      <div className="card">
-        <h2>Sign in</h2>
+    <div className="loginExperience">
+      <section className="loginHero card">
+        <span className="heroKicker">Attendance, reimagined</span>
+        <h1>Clock in with confidence and clarity.</h1>
+        <p className="heroLead">
+          Inala blends location awareness with intuitive workflows so learners, facilitators, and admins can move faster from
+          check-in to action.
+        </p>
+        <div className="heroTags">
+          <span className="heroTag">Real-time geolocation</span>
+          <span className="heroTag">Role-based access</span>
+          <span className="heroTag">Secure sign-in</span>
+        </div>
+        <div className="heroSteps">
+          <div className="heroStep">
+            <span>01</span>
+            <p>Sign in using your learner or facilitator/admin account.</p>
+          </div>
+          <div className="heroStep">
+            <span>02</span>
+            <p>Use the top navigation to enter your role-specific workspace.</p>
+          </div>
+          <div className="heroStep">
+            <span>03</span>
+            <p>Start tracking attendance with location context in seconds.</p>
+          </div>
+        </div>
+      </section>
+
+      <section className="card loginPanel">
+        <h2>Welcome back</h2>
         <div className="hint">Use your learner or facilitator/admin credentials.</div>
         <div style={{ height: 12 }} />
         <div className="field">
@@ -34,7 +62,7 @@ export function LoginPage() {
         {error ? <div className="alert bad">{error}</div> : null}
         <div className="row" style={{ marginTop: 12 }}>
           <button
-            className="btn primary"
+            className="btn primary loginSubmit"
             disabled={busy}
             onClick={async () => {
               setBusy(true);
@@ -52,22 +80,10 @@ export function LoginPage() {
             {busy ? "Signing in…" : "Sign in"}
           </button>
         </div>
-      </div>
-
-      <div className="card">
-        <h2>Choose your page</h2>
-        <div className="hint">
-          We do not auto-redirect after login. Use the header buttons:
-          <br />
-          <br />
-          After logging in, if you are a <b>learner</b>, click <b>Learner</b> (top header).
-          <br />
-          If you are <b>facilitator/admin</b>, click <b>Dashboard</b> (top header).
-          <br />
-          <br />
-          Tip: if you still see “Sign in”, you may not be fully authenticated yet—try signing in again.
+        <div className="hint loginHint">
+          After login, click <b>Learner</b> in the header for learner view or <b>Dashboard</b> for facilitator/admin view.
         </div>
-      </div>
+      </section>
     </div>
   );
 }

@@ -147,6 +147,159 @@ a{ color: inherit; }
   .grid{ grid-template-columns: 1.2fr .8fr; }
 }
 
+.loginExperience{
+  margin-top: 18px;
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 960px){
+  .loginExperience{
+    grid-template-columns: 1.2fr .8fr;
+    align-items: stretch;
+  }
+}
+
+.card.loginHero{
+  position: relative;
+  overflow: hidden;
+  min-height: 420px;
+  border-color: rgba(255,255,255,.34);
+  background:
+    radial-gradient(420px 230px at 16% 14%, rgba(255,255,255,.20), transparent 62%),
+    radial-gradient(560px 300px at 98% 6%, rgba(255,255,255,.18), transparent 66%),
+    radial-gradient(680px 320px at 68% 92%, rgba(255,122,47,.18), transparent 64%),
+    linear-gradient(130deg, rgba(43,138,110,.96), rgba(58,167,135,.88) 54%, rgba(109,91,208,.76));
+  box-shadow: var(--shadow2);
+  color: #fff;
+}
+.card.loginHero::before{
+  content: "";
+  position: absolute;
+  inset: -24% -26% auto auto;
+  width: 380px;
+  height: 380px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.20);
+  background: radial-gradient(circle at 40% 40%, rgba(255,255,255,.22), rgba(255,255,255,.02));
+  transform: rotate(14deg);
+}
+.card.loginHero::after{
+  content: "";
+  position: absolute;
+  left: -110px;
+  bottom: -140px;
+  width: 360px;
+  height: 360px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.16);
+  background: radial-gradient(circle at 48% 38%, rgba(255,255,255,.16), rgba(255,255,255,.03));
+}
+.card.loginHero h1{
+  margin: 8px 0 12px;
+  max-width: 14ch;
+  font-size: clamp(2rem, 4.4vw, 3.15rem);
+  line-height: 1.02;
+  letter-spacing: -.03em;
+  position: relative;
+  z-index: 1;
+}
+.heroKicker{
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.26);
+  background: rgba(255,255,255,.14);
+  backdrop-filter: blur(8px);
+}
+.heroLead{
+  position: relative;
+  z-index: 1;
+  max-width: 52ch;
+  margin: 0;
+  color: rgba(255,255,255,.92);
+  font-size: 14px;
+}
+.heroTags{
+  position: relative;
+  z-index: 1;
+  margin-top: 18px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.heroTag{
+  font-size: 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.26);
+  background: rgba(255,255,255,.14);
+  padding: 5px 10px;
+  color: rgba(255,255,255,.95);
+}
+.heroSteps{
+  position: relative;
+  z-index: 1;
+  margin-top: 24px;
+  display: grid;
+  gap: 10px;
+}
+.heroStep{
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px;
+  align-items: start;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.20);
+  background: rgba(0,0,0,.10);
+}
+.heroStep span{
+  display: inline-flex;
+  width: 24px;
+  height: 24px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.34);
+  background: rgba(255,255,255,.16);
+  font-size: 11px;
+  font-weight: 700;
+}
+.heroStep p{
+  margin: 1px 0 0;
+  font-size: 13px;
+  color: rgba(255,255,255,.95);
+}
+
+.loginPanel{
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(520px 200px at 8% 0%, rgba(109,91,208,.08), transparent 56%),
+    radial-gradient(520px 220px at 100% 0%, rgba(255,122,47,.08), transparent 58%),
+    rgba(255,255,255,.92);
+}
+.loginPanel h2{
+  font-size: 24px;
+  letter-spacing: -.02em;
+  margin-bottom: 8px;
+}
+.loginSubmit{
+  min-width: 140px;
+}
+.loginHint{
+  margin-top: 14px;
+  border-top: 1px dashed rgba(15,23,42,.14);
+  padding-top: 10px;
+}
+
 .card{
   border: 1px solid rgba(15,23,42,.10);
   background:
@@ -395,6 +548,18 @@ tbody tr:hover td{
 
 /* Mobile polish: prevent the green header from squashing. */
 @media (max-width: 520px){
+  .card.loginHero{
+    min-height: auto;
+  }
+  .card.loginHero h1{
+    font-size: clamp(1.8rem, 8vw, 2.35rem);
+  }
+  .heroLead{
+    font-size: 13px;
+  }
+  .heroSteps{
+    margin-top: 16px;
+  }
   .topbar{
     flex-direction: column;
     align-items: flex-start;
